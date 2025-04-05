@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Collector | Modern App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern CSS Reset */
+        :root {
+            --primary: #FF5A5F;
+            /* Vibrant coral-red - more modern and lively */
+            --primary-dark: #E04A50;
+            /* Slightly darker for contrast */
+            --secondary: #FF7E85;
+            /* Lighter complementary shade */
+            --light: #F7F7F7;
+            /* Soft off-white for backgrounds */
+            --dark: #2D2D2D;
+            /* Dark gray instead of pure black for better readability */
+            --gray: #6C8BA7;
+            /* Softer blue-gray tone */
+            --success: #4CAF50;
+            /* More natural green */
+            --danger: #F44336;
+            /* Standard alert red */
+            --warning: #FF9800;
+            /* Added orange for warnings */
+            --info: #2196F3;
+            /* Added blue for informational elements */
+
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(255, 90, 95, 0.15);
+            /* Softer, more diffuse shadow */
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            /* Smoother easing */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="email"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-block {
+            display: flex;
+            width: 100%;
+        }
+
+        .email-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .email-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .email-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .email-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .email-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .email-item:hover {
+            background-color: #e9ecef;
+        }
+
+        .email-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .delete-btn {
+            color: var(--danger);
+        }
+
+        .delete-btn:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        .copy-btn {
+            color: var(--primary);
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--success);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transform: translateX(200%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background-color: var(--danger);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            header {
+                padding: 1.5rem 0;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Email Collector</h1>
+            <p class="subtitle">Store and manage your email addresses securely</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-envelope"></i> Add New Email</h2>
+            <form id="emailForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="example@domain.com" required>
+                </div>
+                <button type="submit" class="btn btn-block"><i class="fas fa-plus"></i> Add Email</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-list"></i> Stored Emails</h2>
+            <ul class="email-list" id="emailList">
+                <!-- Emails will be loaded here -->
+            </ul>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalEmails">0</div>
+                <div class="stat-label">Total Emails</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="uniqueDomains">0</div>
+                <div class="stat-label">Unique Domains</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="storageUsage">0%</div>
+                <div class="stat-label">Storage Used</div>
+            </div>
+        </div>
+    </main>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationMessage">Email added successfully!</span>
+    </div>
+
+    <footer>
+        <p>© 2023 Email Collector | Built with Node.js & MongoDB</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const emailForm = document.getElementById('emailForm');
+            const emailList = document.getElementById('emailList');
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notificationMessage');
+            const totalEmailsElement = document.getElementById('totalEmails');
+            const uniqueDomainsElement = document.getElementById('uniqueDomains');
+            const storageUsageElement = document.getElementById('storageUsage');
+
+            // Load emails when page loads
+            loadEmails();
+
+            // Form submission
+            emailForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const emailInput = document.getElementById('email');
+                const email = emailInput.value.trim();
+
+                if (!email) {
+                    showNotification('Please enter an email address', true);
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/add-email', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showNotification(data.message || 'Email added successfully!');
+                        emailInput.value = '';
+                        loadEmails();
+                    } else {
+                        throw new Error(data.error || 'Failed to add email');
+                    }
+                } catch (error) {
+                    showNotification(error.message, true);
+                    console.error('Error:', error);
+                }
+            });
+
+            // Load emails from server
+            async function loadEmails() {
+                try {
+                    const response = await fetch('/emails');
+                    const emails = await response.json();
+
+                    emailList.innerHTML = '';
+
+                    if (emails.length === 0) {
+                        emailList.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                <p>No emails stored yet</p>
+                            </div>
+                        `;
+                        updateStats(emails);
+                        return;
+                    }
+
+                    emails.forEach(email => {
+                        const li = document.createElement('li');
+                        li.className = 'email-item';
+                        li.innerHTML = `
+                            <span>${email.email}</span>
+                            <div class="email-actions">
+                                <button class="action-btn copy-btn" data-email="${email.email}" title="Copy to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="action-btn delete-btn" data-id="${email._id}" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        `;
+                        emailList.appendChild(li);
+                    });
+
+                    // Update stats
+                    updateStats(emails);
+
+                    // Add event listeners to new buttons
+                    addButtonEventListeners();
+                } catch (error) {
+                    showNotification('Error loading emails', true);
+                    console.error('Error loading emails:', error);
+                }
+            }
+
+            // Update statistics
+            function updateStats(emails) {
+                totalEmailsElement.textContent = emails.length;
+
+                // Count unique domains
+                const domains = new Set();
+                emails.forEach(email => {
+                    const domain = email.email.split('@')[1];
+                    if (domain) domains.add(domain);
+                });
+                uniqueDomainsElement.textContent = domains.size;
+
+                // Calculate storage usage (demo - in real app this would come from server)
+                const usagePercent = Math.min(100, Math.round(emails.length / 50 * 100));
+                storageUsageElement.textContent = `${usagePercent}%`;
+            }
+
+            // Add event listeners to action buttons
+            function addButtonEventListeners() {
+                // Copy buttons
+                document.querySelectorAll('.copy-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const email = this.getAttribute('data-email');
+                        navigator.clipboard.writeText(email)
+                            .then(() => showNotification('Email copied to clipboard!'))
+                            .catch(err => {
+                                console.error('Failed to copy:', err);
+                                showNotification('Failed to copy email', true);
+                            });
+                    });
+                });
+
+                // Delete buttons
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async function () {
+                        const id = this.getAttribute('data-id');
+                        if (confirm('Are you sure you want to delete this email?')) {
+                            try {
+                                const response = await fetch(`/delete-email/${id}`, {
+                                    method: 'DELETE'
+                                });
+
+                                const data = await response.json();
+
+                                if (response.ok) {
+                                    showNotification(data.message || 'Email deleted successfully!');
+                                    loadEmails();
+                                } else {
+                                    throw new Error(data.error || 'Failed to delete email');
+                                }
+                            } catch (error) {
+                                showNotification(error.message, true);
+                                console.error('Error:', error);
+                            }
+                        }
+                    });
+                });
+            }
+
+            // Show notification
+            function showNotification(message, isError = false) {
+                notificationMessage.textContent = message;
+                notification.className = 'notification';
+                notification.classList.add(isError ? 'error' : 'show');
+
+                if (isError) {
+                    notification.querySelector('i').className = 'fas fa-exclamation-circle';
+                } else {
+                    notification.querySelector('i').className = 'fas fa-check-circle';
+                }
+
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+
+</html>
